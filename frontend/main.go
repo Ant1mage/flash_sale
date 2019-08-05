@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"flash-sale/dao"
-	"flash-sale/front_end/middleware"
-	"flash-sale/front_end/web/controllers"
+	"flash-sale/frontend/middleware"
+	"flash-sale/frontend/web/controllers"
 	"flash-sale/helper"
 	"flash-sale/services"
 	"github.com/kataras/iris"
@@ -18,12 +18,12 @@ func main() {
 
 	app.Logger().SetLevel("debug")
 
-	template := iris.HTML("./front_end/web/views", ".html").Layout("shared/layout.html").Reload(true)
+	template := iris.HTML("./frontend/web/views", ".html").Layout("shared/layout.html").Reload(true)
 	app.RegisterView(template)
 
-	app.StaticWeb("/public", "./front_end/web/public")
+	app.StaticWeb("/public", "./frontend/web/public")
 
-	app.StaticWeb("/html", "./front_end/web/htmlProductShow")
+	app.StaticWeb("/html", "./frontend/web/htmlProductShow")
 
 	app.OnAnyErrorCode(func(ctx iris.Context) {
 		ctx.ViewData("message", ctx.Values().GetStringDefault("message", "访问的页面出错！"))
