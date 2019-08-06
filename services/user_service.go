@@ -17,8 +17,7 @@ type UserService struct {
 }
 
 func (u *UserService) Login(userName string, pwd string) (user *datamodels.User, isLogin bool) {
-	var err error
-	user, err = u.UserRepository.SelectByName(userName)
+	user, err := u.UserRepository.SelectByName(userName)
 	if err != nil {
 		return
 	}

@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"flash-sale/datamodels"
+	"flash-sale/encrypt"
 	"flash-sale/services"
 	"flash-sale/tool"
+	"fmt"
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/mvc"
 	"github.com/kataras/iris/sessions"
@@ -64,9 +66,13 @@ func (c *UserController) PostLogin() mvc.Response {
 			Path: "/user/login",
 		}
 	}
-	//写入用户ID到cookie中
-	tool.GlobalCookie(c.Ctx, "uid", strconv.FormatInt(user.ID, 10))
-	c.Session.Set("userID", strconv.FormatInt(user.ID, 10))
+	//写入用户ID到cookie中 
+	uidByte := []byte(strconv.FormatInt(user.ID, 10))
+	uidString, err := encrypt.EnPwdCode(uidByte)
+	if err != nil {
+		fmt.Println(err)
+	}
+	tool.GlobalCookie(c.Ctx, "sign", uidString)
 	return mvc.Response{
 		Path: "/product/",
 	}
