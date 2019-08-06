@@ -1,10 +1,10 @@
 package common
 
 import (
-	"reflect"
-	"time"
-	"strconv"
 	"errors"
+	"reflect"
+	"strconv"
+	"time"
 )
 
 //根据结构体中sql标签映射数据到结构体中并且转换类型
@@ -66,4 +66,3 @@ func TypeConversion(value string, ntype string) (reflect.Value, error) {
 
 	return reflect.ValueOf(value), errors.New("未知的类型：" + ntype)
 }
-

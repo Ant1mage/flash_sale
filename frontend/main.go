@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"flash-sale/dao"
-	"flash-sale/frontend/middleware"
 	"flash-sale/frontend/web/controllers"
 	"flash-sale/helper"
 	"flash-sale/services"
@@ -31,8 +30,8 @@ func main() {
 		_ = ctx.View("shared/error.html")
 	})
 	sess := sessions.New(sessions.Config{
-		Cookie:"AdminCookie",
-		Expires:600*time.Minute,
+		Cookie:  "flashSaleCookie",
+		Expires: 600 * time.Minute,
 	})
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -40,7 +39,7 @@ func main() {
 	userRepository := repositories.NewUserDao(helper.InstanceDB())
 	userService := services.NewUserService(userRepository)
 	userPro := mvc.New(app.Party("/user"))
-	userPro.Register(userService, ctx,sess)
+	userPro.Register(userService, ctx, sess)
 	userPro.Handle(new(controllers.UserController))
 
 	product := repositories.NewProductDao(helper.InstanceDB())
@@ -50,7 +49,7 @@ func main() {
 	pro := mvc.New(proProduct)
 	order := repositories.NewOrderDao(helper.InstanceDB())
 	orderService := services.NewOrderService(order)
-	proProduct.Use(middleware.AuthConProduct)
+	//proProduct.Use(middleware.AuthConProduct)
 	pro.Register(productService, orderService)
 	pro.Handle(new(controllers.ProductController))
 

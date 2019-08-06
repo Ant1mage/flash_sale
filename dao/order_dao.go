@@ -9,11 +9,11 @@ import (
 )
 
 type OrderRepository interface {
-	Insert(*datamodels.Order)(int64, error)
+	Insert(*datamodels.Order) (int64, error)
 	Delete(int64) bool
 	Update(*datamodels.Order) error
-	SelectByKey(int64)(*datamodels.Order, error)
-	SelectAll()([]*datamodels.Order, error)
+	SelectByKey(int64) (*datamodels.Order, error)
+	SelectAll() ([]*datamodels.Order, error)
 	SelectAllWithInfo() (orderMap map[int]map[string]string, err error)
 }
 
@@ -23,7 +23,7 @@ type OrderDao struct {
 
 func NewOrderDao(db *gorm.DB) OrderRepository {
 	return &OrderDao{
-		db:db,
+		db: db,
 	}
 }
 
@@ -36,7 +36,7 @@ func (o *OrderDao) Insert(order *datamodels.Order) (productID int64, err error) 
 }
 
 func (o *OrderDao) Delete(productID int64) bool {
-	if err := o.db.Where(&datamodels.Order{ProductID:productID}).Delete(datamodels.Order{}).Error; err != nil {
+	if err := o.db.Where(&datamodels.Order{ProductID: productID}).Delete(datamodels.Order{}).Error; err != nil {
 		return false
 	}
 	return true
@@ -72,7 +72,7 @@ func (o *OrderDao) SelectAllWithInfo() (orderMap map[int]map[string]string, err 
 	var (
 		rows *sql.Rows
 	)
-	if rows, err =o.db.Table("orders").Select("orders.ID,products.productName,orders.orderStatus").Joins("left join products on orders.productID=products.ID").Rows(); err != nil {
+	if rows, err = o.db.Table("orders").Select("orders.ID,products.productName,orders.orderStatus").Joins("left join products on orders.productID=products.ID").Rows(); err != nil {
 		return
 	}
 	orderMap = common.GetResultRows(rows)

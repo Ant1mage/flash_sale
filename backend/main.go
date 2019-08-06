@@ -22,7 +22,7 @@ func main() {
 		_ = ctx.View("shared/error.html")
 	})
 
-	ctx,cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
 	productRepository := repositories.NewProductDao(helper.InstanceDB())
@@ -36,7 +36,7 @@ func main() {
 	orderService := services.NewOrderService(orderRepository)
 	orderParty := app.Party("/order")
 	order := mvc.New(orderParty)
-	order.Register(ctx,orderService)
+	order.Register(ctx, orderService)
 	order.Handle(new(controllers.OrderController))
 
 	_ = app.Run(

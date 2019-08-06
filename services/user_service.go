@@ -41,7 +41,7 @@ func (u *UserService) AddUser(user *datamodels.User) (userID int64, err error) {
 
 func NewUserService(repository repositories.UserRepository) IUserService {
 	return &UserService{
-		UserRepository:repository,
+		UserRepository: repository,
 	}
 }
 

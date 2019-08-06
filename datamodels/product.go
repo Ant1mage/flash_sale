@@ -7,4 +7,3 @@ type Product struct {
 	ProductImage string `json:"ProductImage" gorm:"column:productImage"`
 	ProductUrl   string `json:"ProductUrl" gorm:"column:productUrl"`
 }
-
