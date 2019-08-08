@@ -66,7 +66,8 @@ func (c *UserController) PostLogin() mvc.Response {
 			Path: "/user/login",
 		}
 	}
-	//写入用户ID到cookie中 
+	//写入用户ID到cookie中
+	tool.GlobalCookie(c.Ctx, "uid", strconv.FormatInt(user.ID, 10))
 	uidByte := []byte(strconv.FormatInt(user.ID, 10))
 	uidString, err := encrypt.EnPwdCode(uidByte)
 	if err != nil {
