@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	
 	"flash-sale/dao"
 	"flash-sale/frontend/middleware"
 	"flash-sale/frontend/web/controllers"
@@ -13,34 +14,34 @@ import (
 
 func main() {
 	app := iris.New()
-
+	
 	app.Logger().SetLevel("debug")
-
+	
 	template := iris.HTML("./frontend/web/views", ".html").Layout("shared/layout.html").Reload(true)
 	app.RegisterView(template)
-
+	
 	app.StaticWeb("/public", "./frontend/web/public")
-
+	
 	app.StaticWeb("/html", "./frontend/web/htmlProductShow")
-
+	
 	app.OnAnyErrorCode(func(ctx iris.Context) {
 		ctx.ViewData("message", ctx.Values().GetStringDefault("message", "访问的页面出错！"))
 		ctx.ViewLayout("")
 		_ = ctx.View("shared/error.html")
 	})
-
+	
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-
+	
 	userRepository := repositories.NewUserDao(helper.InstanceDB())
 	userService := services.NewUserService(userRepository)
 	userPro := mvc.New(app.Party("/user"))
 	userPro.Register(userService, ctx)
 	userPro.Handle(new(controllers.UserController))
-
+	
 	product := repositories.NewProductDao(helper.InstanceDB())
 	productService := services.NewProductService(product)
-
+	
 	proProduct := app.Party("/product")
 	pro := mvc.New(proProduct)
 	order := repositories.NewOrderDao(helper.InstanceDB())
@@ -48,11 +49,11 @@ func main() {
 	proProduct.Use(middleware.AuthConProduct)
 	pro.Register(productService, orderService)
 	pro.Handle(new(controllers.ProductController))
-
+	
 	_ = app.Run(
 		iris.Addr("0.0.0.0:8082"),
 		iris.WithoutServerError(iris.ErrServerClosed),
 		iris.WithOptimizations,
 	)
-
+	
 }

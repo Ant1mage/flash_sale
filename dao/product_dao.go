@@ -1,8 +1,9 @@
 package repositories
 
 import (
-	"flash-sale/datamodels"
 	"fmt"
+	
+	"flash-sale/datamodels"
 	"github.com/jinzhu/gorm"
 )
 

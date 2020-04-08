@@ -1,12 +1,13 @@
 package helper
 
 import (
-	"flash-sale/conf"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
 	"log"
 	"sync"
+	
+	"flash-sale/conf"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
 )
 
 var (

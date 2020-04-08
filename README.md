@@ -1,1 +1,1 @@
-# flash_sale
+# Flash Sale Go Version

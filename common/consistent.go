@@ -14,10 +14,12 @@ type units []uint32
 func (x units) Len() int {
 	return len(x)
 }
+
 // 对比大小
 func (x units) Less(i, j int) bool {
 	return x[i] < x[j]
 }
+
 // 交换
 func (x units) Swap(i, j int) {
 	x[i], x[j] = x[j], x[i]
@@ -27,7 +29,7 @@ var errEmpty = errors.New("Hash 环没有数据")
 
 type Consistent struct {
 	// hash环, key为哈希值, value 存放节点信息
-	circle map[uint32]string
+	circle       map[uint32]string
 	sortedHashes units
 	// 虚拟节点个数
 	VirtualNode int
@@ -48,6 +50,7 @@ func NewConsistent() *Consistent {
 func (c *Consistent) generateKey(element string, index int) string {
 	return element + strconv.Itoa(index)
 }
+
 // 获取 hash 位置
 func (c *Consistent) hashkey(key string) uint32 {
 	if len(key) < 64 {
@@ -62,7 +65,7 @@ func (c *Consistent) hashkey(key string) uint32 {
 func (c *Consistent) updateSortedHashes() {
 	hashes := c.sortedHashes[:0]
 	// 判断切片容量
-	if cap(c.sortedHashes) / (c.VirtualNode*4) > len(c.circle) {
+	if cap(c.sortedHashes)/(c.VirtualNode*4) > len(c.circle) {
 		hashes = nil
 	}
 	for k := range c.circle {
@@ -82,8 +85,8 @@ func (c *Consistent) Add(element string) {
 
 // 添加节点
 func (c *Consistent) add(element string) {
-	for i := 0; i<c.VirtualNode;  i++{
-		c.circle[c.hashkey(c.generateKey(element,i))] = element
+	for i := 0; i < c.VirtualNode; i++ {
+		c.circle[c.hashkey(c.generateKey(element, i))] = element
 	}
 	// 更新排序
 	c.updateSortedHashes()
@@ -116,7 +119,7 @@ func (c *Consistent) search(key uint32) int {
 	return i
 }
 
-func (c * Consistent) Get(name string) (string, error) {
+func (c *Consistent) Get(name string) (string, error) {
 	c.RLock()
 	defer c.Unlock()
 	if len(c.circle) == 0 {

@@ -29,17 +29,17 @@ func (f *Filter) Handle(webHandle WebHandle) func(rw http.ResponseWriter, r *htt
 	return func(rw http.ResponseWriter, r *http.Request) {
 		for path, handle := range f.filterMap {
 			if path == r.RequestURI {
-				//执行拦截业务逻辑
+				// 执行拦截业务逻辑
 				err := handle(rw, r)
 				if err != nil {
 					rw.Write([]byte(err.Error()))
 					return
 				}
-				//跳出循环
+				// 跳出循环
 				break
 			}
 		}
-		//执行正常注册的函数
+		// 执行正常注册的函数
 		webHandle(rw, r)
 	}
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	
 	"flash-sale/backend/web/controllers"
 	"flash-sale/dao"
 	"flash-sale/helper"
@@ -21,24 +22,24 @@ func main() {
 		ctx.ViewLayout("")
 		_ = ctx.View("shared/error.html")
 	})
-
+	
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-
+	
 	productRepository := repositories.NewProductDao(helper.InstanceDB())
 	productService := services.NewProductService(productRepository)
 	productParty := app.Party("/product")
 	product := mvc.New(productParty)
 	product.Register(ctx, productService)
 	product.Handle(new(controllers.ProductController))
-
+	
 	orderRepository := repositories.NewOrderDao(helper.InstanceDB())
 	orderService := services.NewOrderService(orderRepository)
 	orderParty := app.Party("/order")
 	order := mvc.New(orderParty)
 	order.Register(ctx, orderService)
 	order.Handle(new(controllers.OrderController))
-
+	
 	_ = app.Run(
 		iris.Addr("localhost:8080"),
 		iris.WithoutServerError(iris.ErrServerClosed),

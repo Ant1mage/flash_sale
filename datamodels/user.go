@@ -1,8 +1,12 @@
 package datamodels
 
+import (
+	"github.com/jinzhu/gorm"
+)
+
 type User struct {
-	ID           int64  `json:"ID" form:"ID" gorm:"column:ID"`
-	NickName     string `json:"nickName" form:"nickName" gorm:"column:nickName"`
-	UserName     string `json:"userName" form:"userName" gorm:"column:userName"`
-	HashPassword string `json:"-" form:"passWord" gorm:"column:passWord"`
+	gorm.Model
+	NickName     string `json:"nickName" form:"nick_name" gorm:"column:nick_name"`
+	UserName     string `json:"userName" form:"user_name" gorm:"column:user_name"`
+	HashPassword string `json:"-" form:"password" gorm:"column:password"`
 }

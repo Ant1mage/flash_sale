@@ -1,16 +1,15 @@
 package datamodels
 
 import (
-	"time"
+	"github.com/jinzhu/gorm"
 )
 
 type Order struct {
-	ID          int64     `gorm:"column:ID"`
-	OrderNum    string    `gorm:"column:orderNum"`
-	UserID      int64     `gorm:"column:userID"`
-	ProductID   int64     `gorm:"column:productID"`
-	OrderStatus int64     `gorm:"column:orderStatus"`
-	CreatedAt   time.Time `gorm:"column:createdAt"`
+	gorm.Model
+	OrderNum    string    `gorm:"column:order_num"`
+	UserID      int64     `gorm:"column:user_id"`
+	ProductID   int64     `gorm:"column:product_id"`
+	OrderStatus int64     `gorm:"column:order_status"`
 }
 
 const (

@@ -39,7 +39,7 @@ func (u UserDao) Insert(user *datamodels.User) (userID int64, err error) {
 	if err = u.db.Create(&user).Error; err != nil {
 		return
 	}
-	userID = user.ID
+	userID = int64(user.ID)
 	return
 }
 

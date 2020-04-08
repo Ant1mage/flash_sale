@@ -2,9 +2,10 @@ package repositories
 
 import (
 	"database/sql"
+	"fmt"
+	
 	"flash-sale/common"
 	"flash-sale/datamodels"
-	"fmt"
 	"github.com/jinzhu/gorm"
 )
 

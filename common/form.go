@@ -18,7 +18,7 @@ type pathMap struct {
 	ma    reflect.Value
 	key   string
 	value reflect.Value
-
+	
 	path string
 }
 
@@ -74,17 +74,17 @@ type Decoder struct {
 	main       reflect.Value
 	formValues url.Values
 	opts       *DecoderOptions
-
+	
 	curr   reflect.Value
 	values []string
-
+	
 	path    string
 	field   string
 	bracket string
-	//isKey   bool
-
+	// isKey   bool
+	
 	maps pathMaps
-
+	
 	customTypes map[reflect.Type]*DecodeCustomType
 }
 
@@ -190,7 +190,7 @@ func (dec Decoder) init() error {
 		dec.field = v.path
 		dec.values = []string{v.key}
 		dec.curr = val
-		//dec.isKey = true
+		// dec.isKey = true
 		if err := dec.decode(); err != nil {
 			return err
 		}
@@ -210,7 +210,7 @@ func (dec *Decoder) analyzePath() (err error) {
 	bracketClosed := false
 	lastPos := 0
 	endPos := 0
-
+	
 	// parse path
 	for i, char := range []byte(dec.path) {
 		if char == '[' && inBracket == false {
@@ -249,7 +249,7 @@ func (dec *Decoder) analyzePath() (err error) {
 				}
 				// found a field, but is not next of a closing bracket, for example: Field1.Field2
 				dec.field = dec.path[lastPos:i]
-				//dec.field = tmp[:i]
+				// dec.field = tmp[:i]
 				lastPos = i + 1
 				if err = dec.traverse(); err != nil {
 					return
@@ -260,7 +260,7 @@ func (dec *Decoder) analyzePath() (err error) {
 	}
 	// last field of path
 	dec.field = dec.path[lastPos:]
-
+	
 	return dec.end()
 }
 
@@ -387,7 +387,7 @@ func (dec *Decoder) decode() error {
 			return err
 		}
 	}
-
+	
 	switch dec.curr.Kind() {
 	case reflect.Array:
 		if dec.bracket == "" {
@@ -502,10 +502,10 @@ func (dec *Decoder) decode() error {
 		if dec.opts.IgnoreUnknownKeys {
 			return nil
 		}
-
+		
 		return newError(fmt.Errorf("not supported type for field \"%v\" in path \"%v\"", dec.field, dec.path))
 	}
-
+	
 	return nil
 }
 
@@ -513,11 +513,11 @@ func (dec *Decoder) decode() error {
 // then retry the search examining the tag "formam" of every field of struct
 func (dec *Decoder) findStructField() error {
 	var anon reflect.Value
-
+	
 	num := dec.curr.NumField()
 	for i := 0; i < num; i++ {
 		field := dec.curr.Type().Field(i)
-
+		
 		if field.Name == dec.field {
 			tag := field.Tag.Get(dec.opts.TagName)
 			if tag == "-" {
@@ -556,7 +556,7 @@ func (dec *Decoder) findStructField() error {
 		dec.curr = anon
 		return nil
 	}
-
+	
 	if dec.opts.IgnoreUnknownKeys {
 		return nil
 	}
